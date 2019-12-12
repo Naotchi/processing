@@ -2,21 +2,22 @@
 # coding: utf-8
 
 # In[ ]:
+from keras import layers, models, optimizers
+import numpy as np
 
-
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_height/X_train', X_train)
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_height/y_train', y_train)
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_height/X_test', X_test)
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_height/y_test', y_test)
+X_train = np.load('./X_train.npy')
+y_train = np.load('./y_train.npy')
+X_test = np.load('./X_test.npy')
+y_test = np.load('./y_test.npy')
 
 
 # In[ ]:
 
 
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/X_train', X_train)
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/y_train', y_train)
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/X_test', X_test)
-np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/y_test', y_test)
+#np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/X_train', X_train)
+#np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/y_train', y_train)
+#np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/X_test', X_test)
+#np.load('/Users/shibaharanaoki/Documents/raspi/cnn2_pic/y_test', y_test)
 
 
 # In[ ]:
@@ -36,7 +37,7 @@ model.add(layers.Dropout(0.2))
 
 model.add(layers.GlobalAveragePooling2D())
 model.add(layers.Dense(512, activation='relu'))
-model.add(layers.Dropout(0.5))
+model.add(layers.Dropout(0.2))
 model.add(layers.Dense(5, activation='softmax'))
 model.summary()
 
@@ -50,7 +51,7 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 # In[ ]:
 
 
-history = model.fit(X_train, y_train, epochs=20, batch_size=64, validation_split=0.1)
+history = model.fit(X_train, y_train, epochs=20, batch_size=128, validation_split=0.2)
 
 
 # In[ ]:
@@ -85,3 +86,4 @@ plt.plot(epochs, val_loss, 'b', label='validation loss')
 plt.title('training and validation loss')
 plt.legend()
 
+model.save('./model1.h5')
